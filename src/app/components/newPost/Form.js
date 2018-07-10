@@ -38,7 +38,6 @@ export class Form extends Component {
                     createdPosts: allCreatedPosts
                 })
                 storageServices.saveData("posts", storedPosts);
-                // storageServices.saveData("createdPosts", this.state.createdPosts)
             })
         this.setState({
             title: "",

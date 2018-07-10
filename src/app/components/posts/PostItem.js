@@ -14,6 +14,12 @@ const PostItem = (props) => {
     const deleteHandler = (event) => {
         event.preventDefault();
         onDelete(id);
+        const filteredPosts = props.allPosts.filter(post => {
+            return post.userId === userId;
+        })
+        if(filteredPosts.length === 1){
+            localStorage.removeItem("myAuthor");
+        }
         window.location.reload();
     }
 

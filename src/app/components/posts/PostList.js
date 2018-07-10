@@ -18,13 +18,13 @@ const PostList = (props) => {
 
             return searchedList.map(post => {
                 return (
-                    <PostItem post={post} key={post.id} />
+                    <PostItem post={post} key={post.id} allPosts={postList}/>
                 )
             })
         } else {
             return postList.reverse().map((post) => {
                 return (
-                    <PostItem post={post} key={post.id} />
+                    <PostItem post={post} key={post.id} allPosts={postList}/>
                 )
             })
         }
