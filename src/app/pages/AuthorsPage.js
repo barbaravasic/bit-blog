@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 
 import { AuthorsList } from '../components/authors/AuthorsList';
 import { authorsServices } from '../../services/authorsServices';
-import { authorsEndpoint } from '../../shared/constants';
 
 class AuthorsPage extends Component{
     constructor() {
@@ -13,7 +12,7 @@ class AuthorsPage extends Component{
     }
 
     componentDidMount() {
-        authorsServices.fetchAuthors(authorsEndpoint)
+        authorsServices.fetchAuthors()
         .then(authors => {
             this.setState({
                 authors

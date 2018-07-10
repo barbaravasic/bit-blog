@@ -11,8 +11,7 @@ class AuthorDetailsPage extends Component {
     }
 
     componentDidMount(){
-        let authorId = this.props.match.params.authorId;
-
+        let authorId = parseInt(this.props.match.params.authorId, 10);
         authorsServices.fetchSingleAuthor(authorId)
         .then(author => {
             this.setState({

@@ -12,7 +12,7 @@ class RelatedPosts extends Component {
     }
 
     componentDidMount(){
-        const authorId = this.props.post.userId;
+        const authorId = parseInt(this.props.post.userId);
         postService.fetchRelatedPosts(authorId)
         .then(relatedPosts => {
             this.setState({
@@ -30,7 +30,7 @@ class RelatedPosts extends Component {
         return (
             <ul>
                 {relatedPosts.map(relatedPost => {
-                    return <RelatedPostsItem relatedPost={relatedPost} key={relatedPost.postId}/>
+                    return <RelatedPostsItem relatedPost={relatedPost} key={relatedPost.id}/>
                 })}
             </ul>
         );

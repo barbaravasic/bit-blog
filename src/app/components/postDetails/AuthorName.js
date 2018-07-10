@@ -13,15 +13,14 @@ class AuthorName extends Component {
     }
 
     componentDidMount() {
-        authorsServices.fetchSingleAuthor(this.props.authorId)
+        const authorId = parseInt(this.props.authorId, 10);
+        authorsServices.fetchSingleAuthor(authorId)
             .then(author => {
                 this.setState({
                     author
                 });
             })
     }
-
-
 
     render() {
         if (!this.state.author) {

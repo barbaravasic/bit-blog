@@ -5,27 +5,43 @@ import { storageServices } from "../shared/storageServices";
 
 class AuthorsServices {
 
-    fetchAuthors(authorsEndpoint) {
-        return fetch(authorsEndpoint)
-            .then(response => response.json())
-            .then(myResponse => {
-                const authorsList = this.adaptAuthorsData(myResponse)
-                storageServices.saveData('authors', authorsList)
+    fetchAuthors() {
+        const authors = storageServices.getData("authors");
 
-                return authorsList;
+        if(!authors) {
+            const authorsList = this.adaptAuthorsData(authors)
+            return new Promise ((res, rej) => {
+                res(authorsList)
             })
+        } else {
+            return fetch(authorsEndpoint)
+                .then(response => response.json())
+                .then(myResponse => {
+                    const authorsList = this.adaptAuthorsData(myResponse)
+                    storageServices.saveData("authors", authorsList)
+    
+                    return authorsList;
+                })
+        }
     }
 
     fetchSingleAuthor(id) {
-        const singleAuthorEndpoint = `${authorsEndpoint}/${id}`
-        return fetch(singleAuthorEndpoint)
-            .then(response => response.json())
-            .then(myResponse => {
-                const newAuthor = this.createAuthorInstance(myResponse)
-                storageServices.saveData('singleAuthor', newAuthor)
-
-                return newAuthor
+        if (id === 11) {
+            const myAuthor = new Author(id, "Pera", "peraperic", "blabla@bla.com", "neka ulica 12", "Beograd", "11000", "25461554", "Awesome Company", "He who dares wins");
+            return new Promise((res, rej) => {
+                res(myAuthor)
             })
+        } else {
+            const singleAuthorEndpoint = `${authorsEndpoint}/${id}`
+            return fetch(singleAuthorEndpoint)
+                .then(response => response.json())
+                .then(myResponse => {
+                    const newAuthor = this.createAuthorInstance(myResponse)
+                    storageServices.saveData('singleAuthor', newAuthor)
+
+                    return newAuthor
+                })
+        }
     }
 
     adaptAuthorsData(authorsData) {
@@ -48,11 +64,11 @@ class AuthorsServices {
 
     fetchRandomPicture(randomPictureEndpoint) {
         return fetch(randomPictureEndpoint)
-        .then(response => response.json())
-        .then(response => {
-            const pictureSrc = response.results[0].picture.large;
-            return pictureSrc;
-        })
+            .then(response => response.json())
+            .then(response => {
+                const pictureSrc = response.results[0].picture.large;
+                return pictureSrc;
+            })
     }
 
     getAuthors() {
