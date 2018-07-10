@@ -5,23 +5,33 @@ import { storageServices } from "../shared/storageServices";
 
 class PostServices {
 
-    fetchPosts(postsEndpoint) {
-        return fetch(postsEndpoint)
-            .then(response => response.json())
-            .then(myData => {
-                const postsList = this.adaptPostData(myData)
-                storageServices.saveData('posts', postsList)
-                return postsList
+    fetchPosts() {
+        const myAuthor = storageServices.getData("myAuthor");
+
+        if (myAuthor) {
+            const postsList = storageServices.getData("posts");
+            return new Promise((res, rej) => {
+                res(postsList)
             })
+        } else {
+            return fetch(postsEndpoint)
+                .then(response => response.json())
+                .then(myData => {
+                    const postsList = this.adaptPostData(myData)
+                    storageServices.saveData("posts", postsList)
+                    return postsList
+                })
+        }
     }
+
     fetchRelatedPosts(id) {
-        if(id === 11) {
+        if (id === 11) {
             const posts = this.getPosts();
             const relatedPosts = posts.filter(post => {
                 return post.userId === id;
             })
             return new Promise((res, rej) => {
-                 res(relatedPosts)
+                res(relatedPosts)
             })
         } else {
             const relatedPostsEndpoint = `${postsEndpoint}?userId=${id}`
@@ -29,7 +39,7 @@ class PostServices {
                 .then(response => response.json())
                 .then(myData => {
                     const postsList = this.adaptPostData(myData)
-    
+
                     return postsList
                 })
         }

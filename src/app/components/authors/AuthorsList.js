@@ -2,7 +2,6 @@ import React, { Fragment, Component } from 'react';
 
 import { AuthorsItem } from './AuthorsItem';
 import { postService } from '../../../services/postServices';
-import { postsEndpoint } from '../../../shared/constants';
 
 class AuthorsList extends Component {
     constructor(props) {
@@ -13,7 +12,7 @@ class AuthorsList extends Component {
 
     }
     componentDidMount() {
-        postService.fetchPosts(postsEndpoint)
+        postService.fetchPosts()
             .then(receivedPosts => {
                 this.setState({
                     posts: receivedPosts

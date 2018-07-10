@@ -6,12 +6,17 @@ import { storageServices } from "../shared/storageServices";
 class AuthorsServices {
 
     fetchAuthors() {
-        const authors = storageServices.getData("authors");
+        const myAuthor = storageServices.getData("myAuthor");
 
-        if(!authors) {
-            const authorsList = this.adaptAuthorsData(authors)
-            return new Promise ((res, rej) => {
-                res(authorsList)
+        if(myAuthor) {
+            return fetch(authorsEndpoint)
+            .then(response => response.json())
+            .then(myResponse => {
+                const authorsList = this.adaptAuthorsData(myResponse);
+                authorsList.push(myAuthor)
+                storageServices.saveData("authors", authorsList)
+
+                return authorsList;
             })
         } else {
             return fetch(authorsEndpoint)
@@ -25,9 +30,13 @@ class AuthorsServices {
         }
     }
 
+    createMyAuthor(id) {
+        return new Author(id, "Pera", "peraperic", "blabla@bla.com", "neka ulica 12", "Beograd", "11000", "25461554", "Awesome Company", "He who dares wins")
+    }
+
     fetchSingleAuthor(id) {
         if (id === 11) {
-            const myAuthor = new Author(id, "Pera", "peraperic", "blabla@bla.com", "neka ulica 12", "Beograd", "11000", "25461554", "Awesome Company", "He who dares wins");
+            const myAuthor = this.createMyAuthor(id);
             return new Promise((res, rej) => {
                 res(myAuthor)
             })

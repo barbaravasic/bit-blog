@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { postService } from '../../../services/postServices';
 import Link from 'react-router-dom/Link';
 import { storageServices } from '../../../shared/storageServices';
+import { authorsServices } from '../../../services/authorsServices';
 
 
 export class Form extends Component {
@@ -27,6 +28,8 @@ export class Form extends Component {
         postService.createPost(myPost)
             .then(myResponse => {
                 const createdPost = myResponse;
+                const createdAuthor = authorsServices.createMyAuthor(createdPost.userId);
+                storageServices.saveData("myAuthor", createdAuthor)
                 const storedPosts = storageServices.getData("posts");
                 storedPosts.push(createdPost);
                 const allCreatedPosts = this.state.createdPosts;
@@ -35,7 +38,7 @@ export class Form extends Component {
                     createdPosts: allCreatedPosts
                 })
                 storageServices.saveData("posts", storedPosts);
-                storageServices.saveData("createdPosts", this.state.createdPosts)
+                // storageServices.saveData("createdPosts", this.state.createdPosts)
             })
         this.setState({
             title: "",
